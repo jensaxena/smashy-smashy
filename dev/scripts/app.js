@@ -12,11 +12,14 @@ smash.y = undefined;
 smash.dx = undefined;
 smash.dy = undefined;
 
+smash.paddleX = undefined;
+
 smash.default = function() {
   smash.x = smash.canvas.width / 2;
   smash.y = smash.canvas.height - 30;
   smash.dx = 2;
   smash.dy = -2;
+  smash.paddleX = (smash.canvas.width - smash.paddleWidth) / 2;
 };
 
 // CREATE BALL
@@ -29,6 +32,18 @@ smash.drawBall = function() {
   smash.context.fill();
   smash.context.closePath();
 };
+
+// CREATE PADDLE
+smash.paddleHeight = 10;
+smash.paddleWidth = 75;
+
+smash.drawPaddle = function() {
+  smash.context.beginPath();
+  smash.context.rect(smash.paddleX, (smash.canvas.height - smash.paddleHeight), smash.paddleWidth, smash.paddleHeight);
+  smash.context.fillStyle = 'white';
+  smash.context.fill();
+  smash.context.closePath();
+}
 
 // BOUNCE OFF THE WALLS
 smash.reverseX = function() {
@@ -53,7 +68,9 @@ smash.draw = function() {
   // CLEAR CANVAS
   smash.context.clearRect(0, 0, smash.canvas.width, smash.canvas.height);
 
+  // DRAW IT OUT
   smash.drawBall();
+  smash.drawPaddle();
 
   // WALLBALL
   if (smash.hitX()) {
