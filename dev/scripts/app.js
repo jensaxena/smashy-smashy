@@ -14,6 +14,9 @@ smash.dy = undefined;
 
 smash.paddleX = undefined;
 
+smash.leftKey = false;
+smash.rightKey = false;
+
 smash.default = function() {
   smash.x = smash.canvas.width / 2;
   smash.y = smash.canvas.height - 30;
@@ -49,7 +52,6 @@ smash.drawPaddle = function() {
 smash.reverseX = function() {
   return smash.dx = -smash.dx;
 };
-
 smash.reverseY = function() {
   return smash.dy = -smash.dy;
 };
@@ -57,9 +59,40 @@ smash.reverseY = function() {
 smash.hitY = function() {
   return (smash.y + smash.dy) < smash.ballRadius || (smash.y + smash.dy) > (smash.canvas.height - smash.ballRadius);
 };
-
 smash.hitX = function() {
   return (smash.x + smash.dx) < smash.ballRadius || (smash.x + smash.dx) > (smash.canvas.width - smash.ballRadius);
+};
+
+// MOVE IT BACK AND FORTH
+$(document).on('keydown', function(e) {
+  if (e.keyCode === 37) {
+    smash.leftKey = true;
+  }
+  else if (e.keyCode === 39) {
+    smash.rightKey = true;
+  }
+});
+$(document).on('keyup', function(e) {
+  if (e.keyCode === 37) {
+    smash.leftKey = false;
+  }
+  else if (e.keyCode === 39) {
+    smash.rightKey = false;
+  }
+});
+
+smash.marginLeft = function() {
+  return smash.paddleX > 0;
+};
+smash.marginRight = function() {
+  return smash.paddleX < (smash.canvas.width - smash.paddleWidth);
+};
+
+smash.moveLeft = function() {
+  return smash.paddleX -= 7;
+};
+smash.moveRight = function() {
+  return smash.paddleX += 7;
 };
 
 // ACTION!
@@ -78,6 +111,14 @@ smash.draw = function() {
   };
   if (smash.hitY()) {
     smash.reverseY();
+  };
+
+  // ELECTRIC SLIDE
+  if (smash.leftKey && smash.marginLeft()) {
+    smash.moveLeft();
+  };
+  if (smash.rightKey && smash.marginRight()) {
+    smash.moveRight();
   };
 
   // POSITION += NEW POSITION
