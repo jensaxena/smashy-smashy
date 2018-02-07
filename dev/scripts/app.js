@@ -30,6 +30,23 @@ smash.drawBall = function() {
   smash.context.closePath();
 };
 
+// BOUNCE OFF THE WALLS
+smash.reverseX = function() {
+  return smash.dx = -smash.dx;
+};
+
+smash.reverseY = function() {
+  return smash.dy = -smash.dy;
+};
+
+smash.hitY = function() {
+  return (smash.y + smash.dy) < smash.ballRadius || (smash.y + smash.dy) > (smash.canvas.height - smash.ballRadius);
+};
+
+smash.hitX = function() {
+  return (smash.x + smash.dx) < smash.ballRadius || (smash.x + smash.dx) > (smash.canvas.width - smash.ballRadius);
+};
+
 // ACTION!
 smash.draw = function() {
 
@@ -38,7 +55,15 @@ smash.draw = function() {
 
   smash.drawBall();
 
-  // MOVE
+  // WALLBALL
+  if (smash.hitX()) {
+    smash.reverseX();
+  };
+  if (smash.hitY()) {
+    smash.reverseY();
+  };
+
+  // POSITION += NEW POSITION
   smash.x += smash.dx;
   smash.y += smash.dy;
 
