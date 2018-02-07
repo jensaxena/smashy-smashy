@@ -56,11 +56,14 @@ smash.reverseY = function() {
   return smash.dy = -smash.dy;
 };
 
-smash.hitY = function() {
-  return (smash.y + smash.dy) < smash.ballRadius || (smash.y + smash.dy) > (smash.canvas.height - smash.ballRadius);
-};
 smash.hitX = function() {
   return (smash.x + smash.dx) < smash.ballRadius || (smash.x + smash.dx) > (smash.canvas.width - smash.ballRadius);
+};
+smash.hitTheRoof = function() {
+  return (smash.y + smash.dy) < smash.ballRadius;
+};
+smash.hitTheFloor = function() {
+  return (smash.y + smash.dy) > (smash.canvas.height - smash.ballRadius);
 };
 
 // MOVE IT BACK AND FORTH
@@ -109,8 +112,13 @@ smash.draw = function() {
   if (smash.hitX()) {
     smash.reverseX();
   };
-  if (smash.hitY()) {
+  if (smash.hitTheRoof()) {
     smash.reverseY();
+  } else if (smash.hitTheFloor()) {
+    $('#alert').text('lose');
+    setTimeout(function() {
+      document.location.reload();
+    }, 1000);
   };
 
   // ELECTRIC SLIDE

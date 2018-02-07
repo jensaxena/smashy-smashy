@@ -1,7 +1,16 @@
+#alert,
 body,
 canvas {
   background: black;
   margin: 5vh auto;
+}
+
+#alert {
+  color: red;
+  font-size: 60px;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 canvas {
