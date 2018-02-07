@@ -1,11 +1,13 @@
 #alert,
 body,
-canvas {
+canvas,
+h1 {
   background: black;
   margin: 5vh auto;
 }
 
-#alert {
+#alert,
+h1 {
   color: red;
   font-size: 60px;
   font-weight: 900;
