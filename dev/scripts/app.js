@@ -57,13 +57,21 @@ smash.reverseY = function() {
 };
 
 smash.hitX = function() {
-  return (smash.x + smash.dx) < smash.ballRadius || (smash.x + smash.dx) > (smash.canvas.width - smash.ballRadius);
+  return ((smash.x + smash.dx) < smash.ballRadius) || ((smash.x + smash.dx) > (smash.canvas.width - smash.ballRadius));
 };
+
 smash.hitTheRoof = function() {
   return (smash.y + smash.dy) < smash.ballRadius;
 };
 smash.hitTheFloor = function() {
   return (smash.y + smash.dy) > (smash.canvas.height - smash.ballRadius);
+};
+
+smash.overPaddle = function() {
+  return (smash.x > smash.paddleX) && (smash.x < (smash.paddleX + smash.paddleWidth));
+};
+smash.hitPaddle = function() {
+  return smash.overPaddle() && smash.hitTheFloor();
 };
 
 // MOVE IT BACK AND FORTH
@@ -112,7 +120,7 @@ smash.draw = function() {
   if (smash.hitX()) {
     smash.reverseX();
   };
-  if (smash.hitTheRoof()) {
+  if (smash.hitTheRoof() || smash.hitPaddle()) {
     smash.reverseY();
   } else if (smash.hitTheFloor()) {
     $('#alert').text('lose');
