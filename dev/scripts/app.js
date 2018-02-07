@@ -1,14 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+// NAMESPACE
+const smash = {};
 
-class App extends React.Component {
-    render() {
-      return (
-        <div>
-          Hello
-        </div>
-      )
-    }
-}
+// INIT
+smash.init = function() {
 
-ReactDOM.render(<App />, document.getElementById('app'));
+};
+
+// DOCREADY
+$(smash.init);
