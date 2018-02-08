@@ -119,8 +119,8 @@ smash.brickLayer = function() {
   for (let col = 0; col < smash.brickColumns; col++) {
     for (let row = 0; row < smash.brickRows; row++) {
       smash.bricks.push({
-        brickX : (row * (smash.brickWidth + smash.brickPadding)) + smash.brickOffsetLeft,
-        brickY : (col * (smash.brickHeight + smash.brickPadding)) + smash.brickOffsetTop,
+        x : (row * (smash.brickWidth + smash.brickPadding)) + smash.brickOffsetLeft,
+        y : (col * (smash.brickHeight + smash.brickPadding)) + smash.brickOffsetTop,
         status : 1
       });
     };
@@ -132,10 +132,30 @@ smash.drawBricks = function() {
     if (!brick.status) return;
 
     smash.context.beginPath();
-    smash.context.rect(brick.brickX, brick.brickY, smash.brickWidth, smash.brickHeight);
+    smash.context.rect(brick.x, brick.y, smash.brickWidth, smash.brickHeight);
     smash.context.fillStyle = 'white';
     smash.context.fill();
     smash.context.closePath();
+  });
+};
+
+// BREAK STUFF, WIN PRIZES
+smash.crash = function() {
+  smash.bricks.forEach(function(brick) {
+    if (!brick.status) return;
+
+    smash.brickExists = ((
+        (smash.x > brick.x) &&
+        (smash.x < (brick.x + smash.brickWidth))
+      ) && (
+        (smash.y > brick.y) &&
+        (smash.y < (brick.y + smash.brickHeight))
+      ));
+
+    if (smash.brickExists) {
+      smash.reverseY();
+      brick.status = 0;
+    };
   });
 };
 
@@ -149,6 +169,7 @@ smash.draw = function() {
   smash.drawBricks();
   smash.drawBall();
   smash.drawPaddle();
+  smash.crash();
 
   // WALLBALL
   if (smash.hitX()) {
