@@ -139,6 +139,15 @@ smash.drawBricks = function() {
   });
 };
 
+// SETTLE THE SCORE
+smash.score = 0;
+
+smash.drawScore = function() {
+  smash.context.font = '16px monospace';
+  smash.context.fillStyle = 'white';
+  smash.context.fillText('score: ' + smash.score, 8, 20);
+}
+
 // BREAK STUFF, WIN PRIZES
 smash.crash = function() {
   smash.bricks.forEach(function(brick) {
@@ -155,6 +164,14 @@ smash.crash = function() {
     if (smash.brickExists) {
       smash.reverseY();
       brick.status = 0;
+      smash.score++;
+
+      if (smash.score === smash.brickRows * smash.brickColumns) {
+        $('#alert').text('WIN');
+        setTimeout(function() {
+          document.location.reload();
+        }, 1000);
+      };
     };
   });
 };
@@ -169,6 +186,7 @@ smash.draw = function() {
   smash.drawBricks();
   smash.drawBall();
   smash.drawPaddle();
+  smash.drawScore();
   smash.crash();
 
   // WALLBALL
