@@ -46,7 +46,7 @@ smash.drawPaddle = function() {
   smash.context.fillStyle = 'white';
   smash.context.fill();
   smash.context.closePath();
-}
+};
 
 // BOUNCE OFF THE WALLS
 smash.reverseX = function() {
@@ -74,22 +74,20 @@ smash.hitPaddle = function() {
   return smash.overPaddle() && smash.hitTheFloor();
 };
 
-// MOVE IT BACK AND FORTH
+// MOVE BACK AND FORTH
 $(document).on('keydown', function(e) {
   if (e.keyCode === 37) {
     smash.leftKey = true;
-  }
-  else if (e.keyCode === 39) {
+  } else if (e.keyCode === 39) {
     smash.rightKey = true;
-  }
+  };
 });
 $(document).on('keyup', function(e) {
   if (e.keyCode === 37) {
     smash.leftKey = false;
-  }
-  else if (e.keyCode === 39) {
+  } else if (e.keyCode === 39) {
     smash.rightKey = false;
-  }
+  };
 });
 
 smash.marginLeft = function() {
@@ -106,6 +104,41 @@ smash.moveRight = function() {
   return smash.paddleX += 7;
 };
 
+// BRICK IT
+smash.brickRows = 5;
+smash.brickColumns = 3;
+smash.brickWidth = 75;
+smash.brickHeight = 20;
+smash.brickPadding = 10;
+smash.brickOffsetTop = 30;
+smash.brickOffsetLeft = 30;
+
+smash.bricks = [];
+
+smash.brickLayer = function() {
+  for (let col = 0; col < smash.brickColumns; col++) {
+    for (let row = 0; row < smash.brickRows; row++) {
+      smash.bricks.push({
+        brickX : (row * (smash.brickWidth + smash.brickPadding)) + smash.brickOffsetLeft,
+        brickY : (col * (smash.brickHeight + smash.brickPadding)) + smash.brickOffsetTop,
+        status : 1
+      });
+    };
+  };
+};
+
+smash.drawBricks = function() {
+  smash.bricks.forEach(function(brick) {
+    if (!brick.status) return;
+
+    smash.context.beginPath();
+    smash.context.rect(brick.brickX, brick.brickY, smash.brickWidth, smash.brickHeight);
+    smash.context.fillStyle = 'white';
+    smash.context.fill();
+    smash.context.closePath();
+  });
+};
+
 // ACTION!
 smash.draw = function() {
 
@@ -113,6 +146,7 @@ smash.draw = function() {
   smash.context.clearRect(0, 0, smash.canvas.width, smash.canvas.height);
 
   // DRAW IT OUT
+  smash.drawBricks();
   smash.drawBall();
   smash.drawPaddle();
 
@@ -146,6 +180,7 @@ smash.draw = function() {
 
 // INIT
 smash.init = function() {
+  smash.brickLayer();
   smash.default();
   smash.draw();
 };
