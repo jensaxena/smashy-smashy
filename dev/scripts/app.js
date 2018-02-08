@@ -145,7 +145,16 @@ smash.score = 0;
 smash.drawScore = function() {
   smash.context.font = '16px monospace';
   smash.context.fillStyle = 'white';
-  smash.context.fillText('score: ' + smash.score, 8, 20);
+  smash.context.fillText('score: ' + smash.score, 10, 20);
+}
+
+// YOLO
+smash.lives = 3;
+
+smash.drawLives = function() {
+  smash.context.font = '16px monospace';
+  smash.context.fillStyle = 'white';
+  smash.context.fillText('lives: ' + smash.lives, (smash.canvas.width - 90), 20);
 }
 
 // BREAK STUFF, WIN PRIZES
@@ -186,6 +195,7 @@ smash.draw = function() {
   smash.drawBricks();
   smash.drawBall();
   smash.drawPaddle();
+  smash.drawLives();
   smash.drawScore();
   smash.crash();
 
@@ -196,10 +206,18 @@ smash.draw = function() {
   if (smash.hitTheRoof() || smash.hitPaddle()) {
     smash.reverseY();
   } else if (smash.hitTheFloor()) {
-    $('#alert').text('lose');
-    setTimeout(function() {
-      document.location.reload();
-    }, 1000);
+    smash.lives--;
+
+    if (!smash.lives) {
+      smash.lives = '💀';
+      $('#alert').text('lose');
+
+      setTimeout(function() {
+        document.location.reload();
+      }, 1000);
+    } else {
+      smash.default();
+    };
   };
 
   // ELECTRIC SLIDE
