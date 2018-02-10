@@ -171,6 +171,10 @@ smash.crash = function() {
       ));
 
     if (smash.brickExists) {
+      smash.sound = $('audio[id="hi-perc-2"]');
+      smash.sound[0].currentTime = 0;
+      smash.sound[0].play();
+
       smash.reverseY();
       brick.status = 0;
       smash.score++;
@@ -202,6 +206,11 @@ smash.draw = function() {
   // WALLBALL
   if (smash.hitX()) {
     smash.reverseX();
+  };
+  if (smash.hitPaddle()) {
+    smash.sound = $('audio[id="kick-5"]');
+    smash.sound[0].currentTime = 0;
+    smash.sound[0].play();
   };
   if (smash.hitTheRoof() || smash.hitPaddle()) {
     smash.reverseY();
