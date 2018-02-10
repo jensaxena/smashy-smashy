@@ -78,8 +78,10 @@ smash.hitPaddle = function() {
 $(document).on('keydown', function(e) {
   if (e.keyCode === 37) {
     smash.leftKey = true;
+    smash.playSound('hi-perc-5');
   } else if (e.keyCode === 39) {
     smash.rightKey = true;
+    smash.playSound('hi-perc-7');
   };
 });
 $(document).on('keyup', function(e) {
@@ -171,22 +173,28 @@ smash.crash = function() {
       ));
 
     if (smash.brickExists) {
-      smash.sound = $('audio[id="hi-perc-2"]');
-      smash.sound[0].currentTime = 0;
-      smash.sound[0].play();
-
       smash.reverseY();
+      smash.playSound('mid-perc-9');
+
       brick.status = 0;
       smash.score++;
 
       if (smash.score === smash.brickRows * smash.brickColumns) {
+        smash.playSound('loop-3');
         $('#alert').text('WIN');
+
         setTimeout(function() {
           document.location.reload();
         }, 1000);
       };
     };
   });
+};
+
+smash.playSound = function(sound) {
+  smash.sound = $(`audio[id="${sound}"]`);
+  smash.sound[0].currentTime = 0;
+  smash.sound[0].play();
 };
 
 // ACTION!
@@ -206,19 +214,21 @@ smash.draw = function() {
   // WALLBALL
   if (smash.hitX()) {
     smash.reverseX();
+    smash.playSound('hi-perc-2');
   };
   if (smash.hitPaddle()) {
-    smash.sound = $('audio[id="kick-5"]');
-    smash.sound[0].currentTime = 0;
-    smash.sound[0].play();
-  };
-  if (smash.hitTheRoof() || smash.hitPaddle()) {
     smash.reverseY();
+    smash.playSound('kick-5');
+  };
+  if (smash.hitTheRoof()) {
+    smash.reverseY();
+    smash.playSound('hi-perc-2');
   } else if (smash.hitTheFloor()) {
+    smash.playSound('mid-perc-8');
     smash.lives--;
-
     if (!smash.lives) {
       smash.lives = '💀';
+
       $('#alert').text('lose');
 
       setTimeout(function() {
